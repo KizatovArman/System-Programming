@@ -1,1 +1,0 @@
-cmd_/home/aeman/Desktop/System-Programming/week3/lab3/lab-3.ko := ld -r -m elf_x86_64  -z max-page-size=0x200000 -T ./scripts/module-common.lds  --build-id  -o /home/aeman/Desktop/System-Programming/week3/lab3/lab-3.ko /home/aeman/Desktop/System-Programming/week3/lab3/lab-3.o /home/aeman/Desktop/System-Programming/week3/lab3/lab-3.mod.o ;  true
