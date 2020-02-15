@@ -3,6 +3,8 @@
 #include <linux/slab.h>
 #include <asm/current.h>
 #include <linux/kfifo.h>
+#include <linux/idr.h>
+
 //rbtree example start
 #include <linux/mm.h>
 #include <linux/mm_types.h>
@@ -59,6 +61,7 @@ void kfifo_example(void) {
 	while(!kfifo_is_empty(&queue)) 
 	{
 		kfifo_out(&queue, &val_mytask, sizeof(&val_mytask));
+		printk("Size of Task %d",sizeof(&val_mytask));
 		print_task(&val_mytask);
 	}
 
@@ -98,16 +101,38 @@ void rbtree_example(void) {
 	printk(KERN_NOTICE "---RBTREE example end---");
 }
 
+void idr_example(void) {
+	struct idr id_huh;
+	idr_init(&id_huh);
+	int id = 0;
+	int rett;
+	idr_preload(&id_huh);
+	// Here is untrackable function;
+	struct my_struct *ptr = idr_find(&id_huh, id);
+	// printk("rett value", &ptr);
+	// do {
+	// 	if(!idr_pre_get(&id_huh, GFP_KERNEL))
+	// 		return -ENOSPC;
+	// 	rett = idr_get_new(&idr_huh, ptr, &id);
+	// } while (rett == - EAGAIN);
+	// printk("rett value", rett);
+
+	// struct my_struct *ptr = idr_find(&idr_huh, id);
+	// if(!ptr)
+	// 	return -EINVAL;
+}
+
 int init_module(void) 
 {
 
-        printk(KERN_INFO "Lab3: start.\n");
+    printk(KERN_INFO "Lab3: start.\n");
 	kfifo_example();
 	rbtree_example();
-        return 0;
+	idr_example();
+    return 0;
 }
 
 void cleanup_module(void)
 {
-        printk(KERN_INFO "Lab3: end.\n");
+    printk(KERN_INFO "Lab3: end.\n");
 }
