@@ -184,13 +184,25 @@ void print_info(pid_t pid) {
 }
 
 
-int main() {
+int main(int argc, char *argv[]) {
 	// Temporarily yields the processor
 	// It causes the calling thread to relinquish the CPU.
 	// The thread is moved to the end of the queue for its static priority
 	// and a new thread gets to run.
+	char * command;
+	int argPid = THEPID;
+	if(argc == 3) {
+		command = argv[1];
+		printf("strcmp out %d\n", strcmp("--pid", command));
+	}
+	if(strcmp("--pid", command) == 0) {
+		argPid = atoi(argv[2]);
+		printf("inserted pid=%d. \n", argPid);
+	} else {
+		printf("Not specified pid. %s\n", argv[2]);
+	}
 	sched_yield();
-	pid_t pid = THEPID;
+	pid_t pid = argPid;
 	alter_scheduling(pid);
 	change_nice_value(pid, -20);
 	print_info(pid);
