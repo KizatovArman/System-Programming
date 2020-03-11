@@ -6,7 +6,17 @@ num  target     prot opt source               destination
 
 Chain OUTPUT (policy ACCEPT)
 num  target     prot opt source               destination         
-1    DROP       all  --  0.0.0.0/0            157.240.0.0/16      
+1    DROP       tcp  --  0.0.0.0/0            140.82.112.0/20      tcp dpt:443
+2    DROP       tcp  --  0.0.0.0/0            140.82.112.0/20      tcp dpt:80
+Chain INPUT (policy ACCEPT)
+num  target     prot opt source               destination         
+
+Chain FORWARD (policy ACCEPT)
+num  target     prot opt source               destination         
+
+Chain OUTPUT (policy ACCEPT)
+num  target     prot opt source               destination         
+1    DROP       tcp  --  0.0.0.0/0            157.240.0.0/16       tcp dpt:443
 Chain INPUT (policy ACCEPT)
 num  target     prot opt source               destination         
 
@@ -24,3 +34,11 @@ num  target     prot opt source               destination
 Chain OUTPUT (policy ACCEPT)
 num  target     prot opt source               destination         
 1    DROP       tcp  --  0.0.0.0/0            157.240.0.0/16       tcp dpt:443
+Chain INPUT (policy ACCEPT)
+num  target     prot opt source               destination         
+
+Chain FORWARD (policy ACCEPT)
+num  target     prot opt source               destination         
+
+Chain OUTPUT (policy ACCEPT)
+num  target     prot opt source               destination         

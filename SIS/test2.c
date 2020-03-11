@@ -9,6 +9,9 @@
 
 //sudo iptables -A OUTPUT -p tcp --dport 443 -d 157.240.0.0/16 -j DROP to unblock
 //sudo iptables -A OUTPUT -d 157.240.0.0/16 -j DROP to block
+//157.240.0.0/16 - FACEBOOK
+//64.233.160.0/19 - YOUTUBE(NOT WELL WORKING)
+//140.82.112.0/20 - GITHUB(???)
 
 char* concat(int count, ...)
 {
@@ -83,7 +86,7 @@ int main (int argc, char *argv[]) {
         else if(strcmp(temp_line, "OUTPUT\n") == 0){
             option2 = TRUE;
             input_option = concat(2, input_option, "OUTPUT ");
-            printf("%sOk. Last thing to do is to write IP-ADDRESS. Ex: '157.240.0.0/16'.\n", programPreString);
+            printf("%sOk. Write IP-ADDRESS. Ex: '157.240.0.0/16'.\n", programPreString);
             printf("%s", programPreString);  
         }
         else if(strcmp(temp_line, "UNBLOCK\n") == 0) {

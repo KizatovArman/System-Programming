@@ -6,6 +6,8 @@
 *   Key that pressed. This example only has 3 key: ESC, F1 and F2
 */
 
+// IRQ - interrupt request
+
 #include <linux/kernel.h>
 #include <linux/module.h>
 #include <linux/sched.h>
@@ -47,6 +49,10 @@ switch (scancode)
   case 0x3B:  printk (KERN_INFO "! You pressed F1 ...\n");
               break;
   case 0x3C:  printk (KERN_INFO "! You pressed F2 ...\n");
+              break;
+  case 0x3A: printk(KERN_INFO "! You pressed Space ...\n");
+              break;
+  case 0x22: printk(KERN_INFO "Press F to pay respect...\n");
               break;
   default:
               break;
