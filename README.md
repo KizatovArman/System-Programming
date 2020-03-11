@@ -3,8 +3,11 @@ Simple c program that parses string commands from user and creates firewall rule
 ## Usage
 1) Clone this repo
 2) Go to SIS folder
-3) ```bash
+3) 
+```bash
 gcc test2.c
+```
+```bash
 ./a.out
 ```
 4) Then follow instructions provided by program.
