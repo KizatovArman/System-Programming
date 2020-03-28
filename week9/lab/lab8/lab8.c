@@ -7,7 +7,7 @@
 #include <linux/spinlock.h>
 
 #define TAG "Lab8"
-#define MAX_NUM 1000000
+#define MAX_NUM 100
 
 static struct task_struct *t1;
 static struct task_struct *t2;
@@ -72,14 +72,16 @@ static int threadSort(void *args) {
     int start = params->start;
     int end = params->end;
     int i = params->start;
+    int temp_element;
     int j;
     while(i <= end) {
+        temp_element = arrUnsorted[i];
         j = i-1;
-        while(j >= start && arrUnsorted[i] < arrUnsorted[j]){
+        while(j >= start && temp_element < arrUnsorted[j]){
             arrUnsorted[j+1] = arrUnsorted[j];
             j--;
         }
-        arrUnsorted[j+1] = arrUnsorted[i];
+        arrUnsorted[j+1] = temp_element;
         i++;
     }
     // Bubble Sort:
@@ -137,13 +139,15 @@ int init_module(void)
 
     t1 = kthread_run(threadSort, &Args[0], "sortBegin");
     t2 = kthread_run(threadSort, &Args[1], "sortEnd");
-    t3 = kthread_run(threadMerge, NULL, "merge1");    
+    t3 = kthread_run(threadMerge, NULL, "merge1");   
+    t4 = kthread_run(threadMerge, NULL, "merge2"); 
     
     printUnsorted();
 
     kthread_stop(t1);
     kthread_stop(t2);
     kthread_stop(t3);
+    kthread_stop(t4);
     
     return 0;
 }
