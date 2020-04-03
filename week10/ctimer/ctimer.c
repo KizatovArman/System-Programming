@@ -2,38 +2,27 @@
 #include <linux/init.h>
 #include <linux/module.h>
 #include <linux/timer.h>
+#include <linux/unistd.h>
+#include <linux/sched.h>
 
 #define TAG "week10"
+#define TIMER_TIMEOUT 1
 
 static struct timer_list mytimer;
+unsigned long seconds = 1;
 
-void exampleTimerFunc(struct timer_list *t) {
-   printk(KERN_INFO "My timer has been executed!\n");
-}
+static void timer_handler(struct timer_list *t1) {
+   static size_t nseconds;
+   nseconds += TIMER_TIMEOUT;
+   pr_info("[timer_hanler] nseconds = %d\n", nseconds);
 
-
-/*
-this example works for linux kernel 4.14 and higher 
-for older version please follow the link below:
-https://stackoverflow.com/questions/53839625/adaptation-from-old-init-timer-to-new-timer-setup
-*/
-void exampleWithTimer(void) {
-   //int ret;
-   printk( "Starting timer to fire in 1000ms (%ld)\n", jiffies );
-   mytimer.expires = jiffies + msecs_to_jiffies(1000);
-   timer_setup(&mytimer, exampleTimerFunc, 0);
-
-   //ret = mod_timer(&mytimer, jiffies + msecs_to_jiffies(200) );
-   //if (ret) {
-   //  printk("Error in mod_timer\n");
-   //}
-
-   add_timer(&mytimer);
+   mod_timer(t1, jiffies + TIMER_TIMEOUT * HZ);
 }
 
 int init_module(void) {
-   printk(KERN_INFO "Starting %s\n", TAG);
-   exampleWithTimer();
+   pr_info("[timer_init] Init module\n");
+   timer_setup(&mytimer, timer_handler, 0);
+   mod_timer(&mytimer, jiffies + TIMER_TIMEOUT * HZ);
    return 0;
 }
 
@@ -41,3 +30,6 @@ void cleanup_module(void) {
    printk(KERN_INFO "Cleanup %s\n", TAG);
    del_timer(&mytimer);
 }
+
+// module_init(init_module);
+// module_exit(cleanup_module);
