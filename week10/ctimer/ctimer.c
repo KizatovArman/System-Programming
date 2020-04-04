@@ -10,26 +10,25 @@
 
 #define TAG "week10"
 #define TIMER_TIMEOUT 1
-#define NANO 1000000000L
 
-static struct timer_list mytimer;
-unsigned long seconds = 1;
-struct timespec tv;
+static struct timer_list mytimer; // declare ctimer
+struct timespec tv; // structure to get current time
 
+// Function that prints current time by using tv_sec(returns seconds) value of timespec structure
+// With simple mathematical we convert those seconds into hours:minutes:seconds format
 void print_current_time(void) {
    getnstimeofday(&tv);
-   long long milliseconds = tv.tv_sec*1000LL;
-   long long Seconds = milliseconds/1000;
    long long hours = (tv.tv_sec/3600 + 6)%24;
    long long minutes = (tv.tv_sec/60)%60;
    long long seconds = tv.tv_sec%60; 
-   // long long hours = (tv.tv_sec/3600 + 6)/24;
-   // long long minutes = tv.tv_sec/60%60;
-   // long long seconds = tv.tv_sec%60; 
-   // pr_info("milliseconds: %lld\n", milliseconds);
    pr_info("Current time: %lld:%lld:%lld", hours, minutes, seconds);
 }
 
+// Function that runs with ctimer
+// It prints counter for each tick as nseconds +
+// current time
+// Then I change expire time of my timer with mod_timer function
+// It is important to use jiffies and *HZ
 static void timer_handler(struct timer_list *t1) {
    static size_t nseconds;
    nseconds += TIMER_TIMEOUT;
@@ -39,6 +38,9 @@ static void timer_handler(struct timer_list *t1) {
    mod_timer(t1, jiffies + TIMER_TIMEOUT * HZ);
 }
 
+// mod_timer function also activates timer is it is inactive
+// this function sets up timer to the first usage
+// and inserts this module into the kernel
 int init_module(void) {
    pr_info("[timer_init] Init module\n");
    timer_setup(&mytimer, timer_handler, 0);
@@ -46,10 +48,11 @@ int init_module(void) {
    return 0;
 }
 
+
+// when write sudo rmmod ctimer
+// this function activates
+// it prints message Cleanup and deletes timer
 void cleanup_module(void) {
    printk(KERN_INFO "Cleanup %s\n", TAG);
    del_timer(&mytimer);
 }
-
-// module_init(init_module);
-// module_exit(cleanup_module);
