@@ -24,13 +24,13 @@ void pageLevelAllocation(void) {
 
 
 int init_module(void) {
-   printk(KERN_INFO "Starting %s\n", TAG);
+   printk(KERN_INFO "Starting Lab 10 - Page Allocation.%s\n", TAG);
    pageLevelAllocation();
    return 0;
 }
 
 void cleanup_module(void) {
-   printk(KERN_INFO "Cleanup %s\n", TAG);
+   printk(KERN_INFO "Cleanup module. End of lab 10. %s\n", TAG);
 }
 
 
